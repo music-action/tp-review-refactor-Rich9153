@@ -7,24 +7,49 @@ export class Game {
 
   public Play(symbol: string, x: number, y: number): void {
     //if first move
-    if (this._lastSymbol == " ") {
-      //if player is X
-      if (symbol == "O") {
-        throw new Error("Invalid first player");
-      }
-    }
+    this.FirstMove(symbol);
     //if not first move but player repeated
-    else if (symbol == this._lastSymbol) {
-      throw new Error("Invalid next player");
-    }
+    this.NotFirstMoveButSamePlayer(symbol);
+
     //if not first move but play on an already played tile
-    else if (this._toto.TileAt(x, y).Symbol != " ") {
-      throw new Error("Invalid position");
-    }
+    this.NotFirstMoveButPlayOnAlreadyTile(x, y);
 
     // update game state
+    this.UpdatePlay(symbol, x, y);
+  }
+
+  private UpdatePlay(symbol: string, x: number, y: number) {
     this._lastSymbol = symbol;
     this._toto.AddTileAt(symbol, x, y);
+  }
+
+  private NotFirstMoveButPlayOnAlreadyTile(x: number, y: number) {
+    if (!this.firstmove() && this._toto.TileAt(x, y).Symbol !== " ") {
+      throw new Error("Invalid position");
+    }
+  }
+
+  private FirstMove(symbol: string) {
+    if (this.firstmove()) {
+      //if player is 0
+      this.ifPlayerIsFirstAllow(symbol);
+    }
+  }
+
+  private NotFirstMoveButSamePlayer(symbol: string) {
+    if (!this.firstmove() && symbol === this._lastSymbol) {
+      throw new Error("Invalid next player");
+    }
+  }
+
+  private ifPlayerIsFirstAllow(symbol: string) {
+    if (symbol == "O") {
+      throw new Error("Invalid first player");
+    }
+  }
+
+  private firstmove() {
+    return this._lastSymbol == " ";
   }
 
   public Winner(): string {
