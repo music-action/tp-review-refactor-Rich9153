@@ -53,56 +53,48 @@ export class Game {
   }
 
   public Winner(): string {
+
+    let rowWinner = " ";
+
     //if the positions in first row are taken
-    if (
-      this._toto.TileAt(0, 0)!.Symbol != " " &&
-      this._toto.TileAt(0, 1)!.Symbol != " " &&
-      this._toto.TileAt(0, 2)!.Symbol != " "
-    ) {
-      //if first row is full with same symbol
-      if (
-        this._toto.TileAt(0, 0)!.Symbol == this._toto.TileAt(0, 1)!.Symbol &&
-        this._toto.TileAt(0, 2)!.Symbol == this._toto.TileAt(0, 1)!.Symbol
-      ) {
-        return this._toto.TileAt(0, 0)!.Symbol;
-      }
+    rowWinner = this.checkRow(0);
+
+    if (rowWinner !== " ") {
+      return rowWinner
     }
 
     //if the positions in 2nd row are taken
-    if (
-      this._toto.TileAt(1, 0)!.Symbol != " " &&
-      this._toto.TileAt(1, 1)!.Symbol != " " &&
-      this._toto.TileAt(1, 2)!.Symbol != " "
-    ) {
-      //if middle row is full with same symbol
-      if (
-        this._toto.TileAt(1, 0)!.Symbol == this._toto.TileAt(1, 1)!.Symbol &&
-        this._toto.TileAt(1, 2)!.Symbol == this._toto.TileAt(1, 1)!.Symbol
-      ) {
-        return this._toto.TileAt(1, 0)!.Symbol;
-      }
+    const secondRowWinner = this.checkRow(1);
+    if (secondRowWinner !== " ") {
+      return secondRowWinner;
     }
 
-    //if the positions in 2nd row are taken
+    //if the positions in 3rd row are taken
+    const thirdRowWinner = this.checkRow(2);
+    if (thirdRowWinner !== " ") {
+      return thirdRowWinner;
+    }
+
+    return " ";
+  }
+
+  private checkRow(row: number): string {
     if (
-      this._toto.TileAt(2, 0)!.Symbol != " " &&
-      this._toto.TileAt(2, 1)!.Symbol != " " &&
-      this._toto.TileAt(2, 2)!.Symbol != " "
+        this._toto.TileAt(row, 0)!.Symbol !== " " &&
+        this._toto.TileAt(row, 1)!.Symbol !== " " &&
+        this._toto.TileAt(row, 2)!.Symbol !== " " &&
+        this._toto.TileAt(row, 0)!.Symbol === this._toto.TileAt(row, 1)!.Symbol &&
+        this._toto.TileAt(row, 2)!.Symbol === this._toto.TileAt(row, 1)!.Symbol
     ) {
-      //if middle row is full with same symbol
-      if (
-        this._toto.TileAt(2, 0)!.Symbol == this._toto.TileAt(2, 1)!.Symbol &&
-        this._toto.TileAt(2, 2)!.Symbol == this._toto.TileAt(2, 1)!.Symbol
-      ) {
-        return this._toto.TileAt(2, 0)!.Symbol;
-      }
+      return this._toto.TileAt(row, 0)!.Symbol;
     }
 
     return " ";
   }
 }
 
-interface Tile {
+
+  interface Tile {
   X: number;
   Y: number;
   Symbol: string;
